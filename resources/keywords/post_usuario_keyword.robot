@@ -1,35 +1,44 @@
 *** Settings ***
 Library     RequestsLibrary
+Library     String
 Library     Collections
-Library     FakerLibrary    locale=pt_br
-
-
-*** Variables ***
-${ALIAS}    API_serverest
 
 
 *** Keywords ***
 Iniciar sessão
-    ${HEADERS}    Create Dictionary    Content-Type=application/json
-    Create Session    alias=${ALIAS}    url=https://serverest.dev    headers=${HEADERS}    disable_warnings=1
+    ${headers}    Create Dictionary    accept=application/json    Content-Type=application/json
+    Create Session    alias=ServeRest    url=https://serverest.dev    headers=${headers}    disable_warnings=1
 
-Gerar dados aleatórios do usuário
-    ${NOME}    FakerLibrary.First Name
-    ${SOBRENOME}    FakerLibrary.Last Name
-    ${EMAIL}    FakerLibrary.Email
-    ${SENHA}    FakerLibrary.Password
-    ${USUARIO}    Create Dictionary
-    ...    nome=${NOME} ${SOBRENOME}
-    ...    email=${EMAIL}
-    ...    senha=${SENHA}
-    Set Suite Variable    ${USUARIO}
+Gerar email
+    ${palavra_aleatoria}    Generate Random String    length=4    chars=[LETTERS]
+    ${palavra_aleatoria}    Convert To Lower Case    ${palavra_aleatoria}
+    Set Test Variable    ${EMAIL_TESTE}    ${palavra_aleatoria}@gmail.com
+    Log    ${EMAIL_TESTE}
 
 POST usuario (administrador)
-    Gerar dados aleatórios do usuário
-    ${BODY}    Create Dictionary
-    ...    nome=${USUARIO.nome}
-    ...    email=${USUARIO.email}
-    ...    password=${USUARIO.senha}
+    [Arguments]    ${email}
+    ${body}    Create Dictionary
+    ...    nome=Usuário Admin
+    ...    email=${email}
+    ...    password=teste1234
     ...    administrador=true
-    ${RESPONSE}    POST On Session    alias=${ALIAS}    url=usuarios    json=${BODY}
-    Log    Resposta Retornada: ${\n}${RESPONSE.text}
+    Log    ${body}
+
+    Iniciar sessão
+
+    ${resposta}    POST On Session
+    ...    alias=ServeRest
+    ...    url=/usuarios
+    ...    json=${body}
+    ...    expected_status=201
+
+    Log    ${resposta.json()}
+
+    Set Test Variable    ${RESPOSTA}
+
+Validar status 201 Created e dados retornados com sucesso
+    Log    ${RESPOSTA.json()}
+    Should Be Equal    ${RESPOSTA.status_code}    ${201}
+    Should Be Equal As Strings    Created    ${RESPOSTA.reason}
+    Dictionary Should Contain Item    ${RESPOSTA.json()}    message    Cadastro realizado com sucesso
+    Dictionary Should Contain Key    ${RESPOSTA.json()}    _id
