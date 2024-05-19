@@ -2,43 +2,45 @@
 Library     RequestsLibrary
 Library     String
 Library     Collections
+Resource    ../../resources/base.resource
+
+
+*** Variables ***
+${message_esperada}     Cadastro realizado com sucesso
 
 
 *** Keywords ***
-Iniciar sessão
-    ${headers}    Create Dictionary    accept=application/json    Content-Type=application/json
-    Create Session    alias=ServeRest    url=https://serverest.dev    headers=${headers}    disable_warnings=1
-
 Gerar email
     ${palavra_aleatoria}    Generate Random String    length=4    chars=[LETTERS]
     ${palavra_aleatoria}    Convert To Lower Case    ${palavra_aleatoria}
-    Set Test Variable    ${EMAIL_TESTE}    ${palavra_aleatoria}@gmail.com
-    Log    ${EMAIL_TESTE}
+    Set Test Variable    ${EMAIL}    ${palavra_aleatoria}@gmail.com
+    Log    ${EMAIL}
 
 POST usuario (administrador)
-    [Arguments]    ${email}
+    [Arguments]    ${EMAIL}
     ${body}    Create Dictionary
     ...    nome=Usuário Admin
-    ...    email=${email}
+    ...    email=${EMAIL}
     ...    password=teste1234
     ...    administrador=true
     Log    ${body}
 
     Iniciar sessão
 
-    ${resposta}    POST On Session
+    ${response_post_usuario}    POST On Session
     ...    alias=ServeRest
     ...    url=/usuarios
     ...    json=${body}
     ...    expected_status=201
 
-    Log    ${resposta.json()}
+    Log    ${response_post_usuario.json()}
 
-    Set Test Variable    ${RESPOSTA}
+    Set Test Variable    ${RESPONSE_POST_USUARIO}    ${response_post_usuario}
+    Set Test Variable    ${JSON_DATA_POST_USUARIO}    ${response_post_usuario.json()}
 
 Validar status 201 Created e dados retornados com sucesso
-    Log    ${RESPOSTA.json()}
-    Should Be Equal    ${RESPOSTA.status_code}    ${201}
-    Should Be Equal As Strings    Created    ${RESPOSTA.reason}
-    Dictionary Should Contain Item    ${RESPOSTA.json()}    message    Cadastro realizado com sucesso
-    Dictionary Should Contain Key    ${RESPOSTA.json()}    _id
+    Log    ${JSON_DATA_POST_USUARIO}
+    Should Be Equal    ${RESPONSE_POST_USUARIO.status_code}    ${201}
+    Should Be Equal As Strings    Created    ${RESPONSE_POST_USUARIO.reason}
+    Dictionary Should Contain Item    ${JSON_DATA_POST_USUARIO}    message    ${message_esperada}
+    Dictionary Should Contain Key    ${JSON_DATA_POST_USUARIO}    _id
