@@ -2,6 +2,7 @@
 Library     RequestsLibrary
 Library     String
 Library     Collections
+Library     ../../resources/helpers.py
 Resource    ../../resources/base.resource
 
 
@@ -10,18 +11,29 @@ ${message_esperada}     Cadastro realizado com sucesso
 
 
 *** Keywords ***
-Gerar email
-    ${palavra_aleatoria}    Generate Random String    length=4    chars=[LETTERS]
-    ${palavra_aleatoria}    Convert To Lower Case    ${palavra_aleatoria}
-    Set Test Variable    ${EMAIL}    ${palavra_aleatoria}@gmail.com
-    Log    ${EMAIL}
+Gerar nome e sobrenome usuário
+    ${nome_sobrenome}    Gerar Nome Sobrenome
+    Set Test Variable    ${NOME_SOBRENOME}    ${nome_sobrenome}
 
-POST usuario (administrador)
-    [Arguments]    ${EMAIL}
+Gerar email usuário
+    ${email}    Gerar Email    ${NOME_SOBRENOME}
+    Set Test Variable    ${EMAIL}    ${email}
+
+Gerar senha usuário
+    ${senha}    Gerar Senha
+    Set Test Variable    ${SENHA}    ${senha}
+
+Gerar dados usuário
+    Gerar nome e sobrenome usuário
+    Gerar email usuário
+    Gerar senha usuário
+
+POST usuário (administrador)
+    [Arguments]    ${nome_sobrenome}    ${email}    ${senha}
     ${body}    Create Dictionary
-    ...    nome=Usuário Admin
-    ...    email=${EMAIL}
-    ...    password=teste1234
+    ...    nome=${nome_sobrenome}
+    ...    email=${email}
+    ...    password=${senha}
     ...    administrador=true
     Log    ${body}
 
