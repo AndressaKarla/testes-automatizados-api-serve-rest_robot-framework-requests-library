@@ -101,7 +101,7 @@ def gerar_nome_sobrenome():
         "Yasmin"
     ]
 
-    nome_aleatorio = nome[random.randint(0, len(nome))]
+    nome_aleatorio = nome[random.randint(0, (len(nome))-1)]
 
     sobrenome = [
         "Abreu",
@@ -189,7 +189,7 @@ def gerar_nome_sobrenome():
         "Xavier"
     ]
 
-    sobrenome_aleatorio = sobrenome[random.randint(0, len(sobrenome))]
+    sobrenome_aleatorio = sobrenome[random.randint(0, (len(sobrenome))-1)]
 
     nome_sobrenome = nome_aleatorio + " " + sobrenome_aleatorio
 
@@ -205,7 +205,7 @@ def gerar_email(nome_sobrenome):
         "@hotmail.com.br"
     ]
 
-    dominio_email_aleatorio = dominio_email[random.randint(0, len(dominio_email))]
+    dominio_email_aleatorio = dominio_email[random.randint(0, (len(dominio_email))-1)]
 
     nome_sobrenome = nome_sobrenome.lower()
 
