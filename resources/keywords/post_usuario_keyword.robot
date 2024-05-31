@@ -34,20 +34,20 @@ Carregar usuário fixture
 
     Log    ${USUARIO_FIXTURE}
 
-Obter nome e sobrenome usuário estático
+Obter nome e sobrenome usuário admin estático
     Set Test Variable    ${NOME_SOBRENOME}    ${USUARIO_FIXTURE['admin_valido']['nome_sobrenome_valido']}
 
-Obter email usuário estático
+Obter email usuário admin estático
     Set Test Variable    ${EMAIL}    ${USUARIO_FIXTURE['admin_valido']['email_valido']}
 
-Obter senha usuário estático
+Obter senha usuário admin estático
     Set Test Variable    ${SENHA}    ${USUARIO_FIXTURE['admin_valido']['senha_valida']}
 
-Obter dados usuário estático
+Obter dados usuário admin estático
     Carregar usuário fixture
-    Obter nome e sobrenome usuário estático
-    Obter email usuário estático
-    Obter senha usuário estático
+    Obter nome e sobrenome usuário admin estático
+    Obter email usuário admin estático
+    Obter senha usuário admin estático
 
 POST usuário (administrador)
     [Arguments]    ${nome_sobrenome}    ${email}    ${senha}

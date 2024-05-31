@@ -231,6 +231,3 @@ def gerar_senha():
 def carregar_fixture(nome_arquivo):
     with open(f'resources/fixtures/{nome_arquivo}.json', 'r', encoding='utf-8') as arquivo:
         return json.load(arquivo)
-    
-fixture = carregar_fixture("usuario")
-print(fixture)

@@ -2,7 +2,7 @@
 # Projeto de Testes Funcionais Automatizados de API REST | Robot Framework | RequestsLibrary | Python :test_tube:
 ---
 # :information_source: Introdução
-Esse projeto "testes-automatizados-api-serve-rest_robot-framework-requests-library" é executado em um ambiente de produção na ["API REST"](https://serverest.dev) do ["ServeRest"](https://github.com/ServeRest) que simula uma loja virtual, com o objetivo de praticar um pouco mais testes automatizados de API REST em Robot Framework, RequestsLibrary e Python.
+Esse projeto "testes-automatizados-api-serve-rest_robot-framework-requests-library" é executado em um ambiente de produção na ["API REST"](https://serverest.dev) do ["ServeRest"](https://github.com/ServeRest) que simula uma loja virtual, com o objetivo de praticar ainda mais testes automatizados de API REST em Robot Framework, RequestsLibrary e Python.
 
 
 ---
