@@ -23,7 +23,7 @@ jobs:
           echo '${{ secrets.USUARIO_ENV }}' > ./resources/fixtures/usuario.json
 
       - name: Passo 3 - Instalar python versão 3.8.1
-        uses: actions/setup-python@v5.0.0
+        uses: actions/setup-python@v2
         with:
           python-version: '3.8.1'
 
