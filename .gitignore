@@ -3,3 +3,5 @@ __pycache__
 *.html
 *.png
 *.log
+resources/fixtures/*.json
+!resources/fixtures/*.example.json

@@ -1,4 +1,4 @@
-import random, re
+import random, re, json
 from unicodedata import normalize
 from faker import Faker
 
@@ -227,3 +227,7 @@ def gerar_senha():
     senha = Faker().password()
 
     return senha
+
+def carregar_fixture(nome_arquivo):
+    with open(f'resources/fixtures/{nome_arquivo}.json', 'r', encoding='utf-8') as arquivo:
+        return json.load(arquivo)

@@ -1,0 +1,45 @@
+name: Pipeline Testes Automatizados API ServeRest Robot Framework
+# executa o workflow toda vez que for realizado um push ou pull-request no repositório
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # permite também executar esse workflow manualmente na aba "Actions" do GitHub
+  workflow_dispatch:
+
+jobs:
+  robot-api-rest:
+    # agente de execução/runner do tipo máquina virtual bem enxuta, sem interface gráfica
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Passo 1 - Obter cópia do código-fonte do repositório
+        uses: actions/checkout@v3
+
+      - name: Passo 2 - Redirecionar os conteúdos de "secrets.USUARIO_ENV", para os arquivos "usuario.json", etc
+        run: |
+          echo '${{ secrets.USUARIO_ENV }}' > ./resources/fixtures/usuario.json
+
+      - name: Passo 3 - Instalar python versão 3.8.1
+        uses: actions/setup-python@v5.0.0
+        with:
+          python-version: '3.8.1'
+
+      - name: Passo 4 - Instalar dependências do projeto
+        run: |
+          pip install -r requirements.txt
+          
+      - name: Passo 5 - Executar testes automatizados de API REST em um ambiente de produção e Gerar relatórios html e xml 
+        run: robot -d ./relatorios -i regressao ./tests/*
+   
+      - name: Passo 6 - Armazenar relatórios html e xml
+        uses: actions/upload-artifact@v3
+        # expressão condicional para que sempre seja executado independentemente dos resultados dos steps anteriores
+        if: ${{ always() }}
+        with: 
+            name: robot-api-rest-relatorios-html-xml
+            path: ./relatorios
+            # armazena por 30 dias
+            retention-days: 30
